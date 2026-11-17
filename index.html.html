@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAGI ASIK | Pelaporan Kegiatan Orang Asing yang Mencurigakan - Imigrasi Kelas II TPI Bintan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        imigrasi: {
+                            navy: '#0B1F3A',
+                            dark: '#071426',
+                            blue: '#1E3A8A',
+                            gold: '#D97706',
+                            amber: '#F59E0B',
+                            lightgold: '#FEF3C7'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F1F5F9;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background-color: white;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- TOP DEMO NAVIGATION BAR (Untuk Presentasi Seminar Aksi Perubahan) -->
+    <header class="bg-imigrasi-dark text-white border-b border-slate-700 sticky top-0 z-40 shadow-lg no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between py-3 gap-3">
+                <!-- Identitas Proyek Aksi Perubahan LAGI ASIK -->
+                <div class="flex items-center space-x-3">
+                    <div class="bg-gradient-to-br from-imigrasi-amber to-amber-600 p-2.5 rounded-xl flex items-center justify-center text-imigrasi-dark shadow-md">
+                        <i class="ph-fill ph-qr-code text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-xs font-extrabold uppercase tracking-wider bg-imigrasi-amber text-imigrasi-dark px-2 py-0.5 rounded-md shadow-sm">INOVASI "LAGI ASIK"</span>
+                            <span id="cloudStatusBadgeNav" class="inline-flex items-center gap-1.5 text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full">
+                                <span id="cloudStatusDotNav" class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+                                <span id="cloudStatusTextNav">Menghubungkan Cloud...</span>
+                            </span>
+                        </div>
+                        <h1 class="font-display font-bold text-xs sm:text-sm text-white leading-tight mt-1">
+                            pe<span class="text-imigrasi-amber underline decoration-amber-400">LA</span>poran ke<span class="text-imigrasi-amber underline decoration-amber-400">GI</span>atan orang <span class="text-imigrasi-amber underline decoration-amber-400">ASI</span>ng yang mencuri<span class="text-imigrasi-amber underline decoration-amber-400">K</span>an
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Navigation Switcher (3 Mode Tampilan) -->
+                <div class="flex items-center gap-2">
+                    <div id="adminNavTabs" class="flex bg-slate-800/90 p-1 rounded-xl border border-slate-700 overflow-x-auto">
+                        <button onclick="switchTab('form')" id="tab-btn-form" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-imigrasi-amber text-imigrasi-dark shadow">
+                            <i class="ph-bold ph-device-mobile-camera text-base"></i>
+                            <span>1. Form "LAGI ASIK"</span>
+                        </button>
+                        <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition-all relative">
+                            <i id="nav-lock-icon" class="ph-fill ph-lock-key text-amber-400 text-base"></i>
+                            <span>2. Portal Petugas</span>
+                            <span id="badge-total-nav" class="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">0</span>
+                        </button>
+                        <button onclick="switchTab('poster')" id="tab-btn-poster" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition-all">
+                            <i class="ph-bold ph-qr-code text-base"></i>
+                            <span>3. Cetak QR & Publish</span>
+                        </button>
+                    </div>
+                    <button onclick="togglePublicPreviewMode()" id="btnTogglePublicMode" title="Simulasikan tampilan murni yang dilihat masyarakat saat scan QR Code" class="hidden lg:inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/30 px-3 py-2 rounded-xl text-xs font-semibold transition">
+                        <i class="ph-bold ph-eye"></i>
+                        <span id="publicModeBtnText">Tampilan Publik</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- BANNER MODE TAMPILAN MASYARAKAT (Muncul saat simulasi mode publik aktif) -->
+    <div id="publicModeBanner" class="hidden bg-emerald-900 text-white text-xs py-2 px-4 text-center no-print border-b border-emerald-700">
+        <div class="max-w-xl mx-auto flex items-center justify-between gap-2">
+            <span class="flex items-center gap-1.5 font-medium">
+                <i class="ph-fill ph-check-circle text-emerald-300"></i>
+                Mode Tampilan Masyarakat Aktif (Sebagaimana dilihat warga saat scan QR)
+            </span>
+            <button onclick="togglePublicPreviewMode()" class="bg-white/15 hover:bg-white/25 text-white font-bold px-2.5 py-1 rounded-lg text-[11px] transition">
+                Tampilkan Menu Admin
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+
+        <!-- ================================================================= -->
+        <!-- TAB 1: FORM PELAPORAN MASYARAKAT "LAGI ASIK"                      -->
+        <!-- ================================================================= -->
+        <section id="view-form" class="block">
+            <!-- Info Konteks Presentasi & Lacak Tiket -->
+            <div id="demoHelperBanner" class="max-w-xl mx-auto mb-4 bg-white border border-slate-200 rounded-2xl p-3 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-700 no-print">
+                <div class="flex items-center gap-2">
+                    <button onclick="openTrackTicketModal()" class="bg-imigrasi-navy hover:bg-imigrasi-blue text-white font-semibold px-3 py-1.5 rounded-xl transition text-xs flex items-center gap-1.5 shadow-sm">
+                        <i class="ph-bold ph-magnifying-glass text-imigrasi-amber"></i>
+                        <span>Cek Status Tiket Laporan</span>
+                    </button>
+                    <span class="text-slate-400 hidden sm:inline">|</span>
+                    <span class="text-[11px] text-slate-500 hidden sm:inline">Sudah melapor? Lacak tindak lanjut di sini.</span>
+                </div>
+                <button onclick="fillDemoForm()" class="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-semibold px-3 py-1.5 rounded-xl whitespace-nowrap transition text-xs flex items-center justify-center gap-1.5">
+                    <i class="ph-bold ph-magic-wand text-amber-600"></i>
+                    <span>Isi Contoh Cepat</span>
+                </button>
+            </div>
+
+            <!-- Mobile Frame Container -->
+            <div class="max-w-xl mx-auto bg-white rounded-3xl shadow-xl border border-slate-200/80 overflow-hidden">
+                
+                <!-- Official Header Imigrasi Bintan - LAGI ASIK -->
+                <div class="bg-gradient-to-br from-imigrasi-navy via-[#102A4C] to-imigrasi-dark text-white p-6 relative overflow-hidden">
+                    <!-- Decorative Pattern -->
+                    <div class="absolute -right-8 -top-8 w-44 h-44 rounded-full bg-imigrasi-amber/15 blur-2xl pointer-events-none"></div>
+                    
+                    <div class="flex items-center justify-between gap-3 relative z-10 border-b border-white/15 pb-4">
+                        <div class="flex items-center gap-3">
+                            <!-- Emblem / Badge Resmi -->
+                            <div class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-sm border border-imigrasi-amber/40 flex flex-col items-center justify-center p-1 shadow-inner flex-shrink-0">
+                                <i class="ph-fill ph-scales text-imigrasi-amber text-xl"></i>
+                                <span class="text-[7px] font-bold tracking-widest text-amber-200 uppercase mt-0.5">IMIGRASI</span>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-semibold uppercase tracking-wider text-amber-400">Kantor Imigrasi Kelas II TPI Bintan</p>
+                                <p class="text-xs font-medium text-slate-300">Seksi Intelijen & Penindakan Keimigrasian</p>
+                            </div>
+                        </div>
+                        <span class="bg-imigrasi-amber text-imigrasi-dark font-display font-extrabold text-xs px-3 py-1 rounded-full shadow">
+                            LAGI ASIK
+                        </span>
+                    </div>
+
+                    <!-- Judul Besar & Akronim LAGI ASIK -->
+                    <div class="mt-4 relative z-10">
+                        <div class="inline-flex items-center gap-1.5 text-[11px] font-bold text-amber-300 bg-white/10 px-2.5 py-0.5 rounded-md mb-1.5">
+                            <i class="ph-fill ph-megaphone"></i>
+                            <span>Inovasi Pengawasan Keimigrasian Berbasis Masyarakat</span>
+                        </div>
+                        <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight flex items-center gap-2">
+                            <span>"LAGI ASIK"</span>
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-200 mt-1 leading-relaxed bg-black/20 p-2.5 rounded-xl border border-white/10">
+                            pe<strong class="text-imigrasi-amber font-extrabold">LA</strong>poran ke<strong class="text-imigrasi-amber font-extrabold">GI</strong>atan orang <strong class="text-imigrasi-amber font-extrabold">ASI</strong>ng yang mencuri<strong class="text-imigrasi-amber font-extrabold">K</strong>an di Wilayah Kerja Imigrasi Bintan
+                        </p>
+                    </div>
+
+                    <!-- Banner Jaminan Kerahasiaan -->
+                    <div class="mt-4 bg-emerald-950/60 backdrop-blur-md border border-emerald-400/30 rounded-2xl p-3.5 flex items-start gap-3">
+                        <div class="bg-emerald-500/20 text-emerald-300 p-2 rounded-xl flex-shrink-0 mt-0.5">
+                            <i class="ph-fill ph-lock-key text-xl"></i>
+                        </div>
+                        <div class="text-xs leading-relaxed text-slate-200">
+                            <strong class="text-emerald-300 font-semibold block mb-0.5">Jaminan Kerahasiaan Identitas Pelapor</strong>
+                            Data diri Anda dijamin kerahasiaannya secara hukum oleh Seksi Inteldakim Kantor Imigrasi Kelas II TPI Bintan.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulir Pelaporan -->
+                <form id="reportForm" onsubmit="handleFormSubmit(event)" class="p-5 sm:p-7 space-y-7">
+                    
+                    <!-- BAGIAN A: IDENTITAS PELAPOR -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+                            <div class="flex items-center gap-2">
+                                <span class="w-6 h-6 rounded-full bg-imigrasi-navy text-imigrasi-amber font-bold text-xs flex items-center justify-center">A</span>
+                                <h3 class="font-display font-bold text-base text-imigrasi-navy">Identitas Pelapor</h3>
+                            </div>
+                            <button type="button" onclick="toggleAnonymous()" id="btnAnonim" class="text-xs font-semibold text-imigrasi-blue bg-blue-50 hover:bg-blue-100 border border-blue-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition">
+                                <i class="ph-bold ph-detective"></i>
+                                <span>Gunakan Inisial / Anonim</span>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                    Nama Lengkap / Inisial <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <i class="ph ph-user absolute left-3.5 top-3 text-slate-400"></i>
+                                    <input type="text" id="pelaporNama" required placeholder="Contoh: Budi Santoso / BS" 
+                                        class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-imigrasi-navy focus:border-imigrasi-navy outline-none transition">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                    Nomor WhatsApp Aktif <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <i class="ph ph-whatsapp-logo absolute left-3.5 top-3 text-emerald-600"></i>
+                                    <input type="tel" id="pelaporWa" required placeholder="Contoh: 08127000xxxx" 
+                                        class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-imigrasi-navy focus:border-imigrasi-navy outline-none transition">
+                                </div>
+                                <p class="text-[11px] text-slate-500 mt-1">Digunakan petugas untuk konfirmasi validasi laporan.</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                Kategori / Status Pelapor <span class="text-red-500">*</span>
+                            </label>
+                            <select id="pelaporKategori" required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-imigrasi-navy outline-none transition">
+                                <option value="Masyarakat Umum">Masyarakat Umum / Warga</option>
+                                <option value="Perangkat Desa / RT / RW">Perangkat Desa / Kelurahan / RT / RW</option>
+                                <option value="Petugas PIMPASA / Anggota TIMPORA">Petugas PIMPASA / Anggota TIMPORA</option>
+                                <option value="Pengelola Hotel / Resort / Penginapan">Pengelola Hotel / Resort / Penginapan</option>
+                                <option value="Instansi Pemerintah / Aparat">Instansi Pemerintah / Aparat Keamanan</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- BAGIAN B: LOKASI & WAKTU KEGIATAN ORANG ASING -->
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2 border-b border-slate-200 pb-2.5">
+                            <span class="w-6 h-6 rounded-full bg-imigrasi-navy text-imigrasi-amber font-bold text-xs flex items-center justify-center">B</span>
+                            <h3 class="font-display font-bold text-base text-imigrasi-navy">Lokasi & Waktu Kegiatan Orang Asing</h3>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                Kecamatan di Wilayah Kerja Imigrasi Bintan <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <i class="ph ph-map-pin-line absolute left-3.5 top-3 text-slate-400"></i>
+                                <select id="lokasiKecamatan" required onchange="updateDefaultCoords()" class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-imigrasi-navy outline-none transition">
+                                    <option value="" disabled selected>-- Pilih Kecamatan Lokasi Kejadian --</option>
+                                    <option value="Bintan Utara">Kec. Bintan Utara (Tanjung Uban dsk.)</option>
+                                    <option value="Seri Kuala Lobam">Kec. Seri Kuala Lobam (Kawasan Industri Lobam dsk.)</option>
+                                    <option value="Teluk Sebong">Kec. Teluk Sebong (Kawasan Wisata Lagoi, Berakit dsk.)</option>
+                                    <option value="Gunung Kijang">Kec. Gunung Kijang (Pantai Trikora, Kawal dsk.)</option>
+                                    <option value="Bintan Timur">Kec. Bintan Timur (Kijang Kota, Sei Lekop dsk.)</option>
+                                    <option value="Toapaya">Kec. Toapaya (Toapaya Asri, Gesek dsk.)</option>
+                                    <option value="Teluk Bintan">Kec. Teluk Bintan (Tembeling, Pangkil dsk.)</option>
+                                    <option value="Mantang">Kec. Mantang (Pulau Mantang dsk.)</option>
+                                    <option value="Bintan Pesisir">Kec. Bintan Pesisir (Kelong, Mapur, Air Glubi dsk.)</option>
+                                    <option value="Tambelan">Kec. Tambelan (Pulau Tambelan dsk.)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label class="block text-xs font-semibold text-slate-700">
+                                    Detail Lokasi / Nama Tempat / Patokan <span class="text-red-500">*</span>
+                                </label>
+                                <button type="button" onclick="simulateGPS()" class="text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition">
+                                    <i class="ph-fill ph-navigation-arrow"></i>
+                                    <span>Ambil Titik GPS Saat Ini</span>
+                                </button>
+                            </div>
+                            <input type="text" id="lokasiDetail" required placeholder="Contoh: Perumahan Griya Indo Blok C No. 4 / Mess Proyek dekat Pelabuhan" 
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-imigrasi-navy outline-none transition">
+                            
+                            <!-- Koordinat GPS Box -->
+                            <div id="gpsBox" class="hidden mt-2 bg-emerald-50/80 border border-emerald-200 rounded-xl px-3 py-2 flex items-center justify-between text-xs text-emerald-800">
+                                <div class="flex items-center gap-2">
+                                    <i class="ph-fill ph-crosshair text-emerald-600 text-base"></i>
+                                    <span>Titik Koordinat Terkunci: <strong id="gpsCoordsText">1.0728° N, 104.2215° E</strong></span>
+                                </div>
+                                <span class="bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">Akurasi Tinggi</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                    Tanggal Kejadian / Ditemukan <span class="text-red-500">*</span>
+                                </label>
+                                <input type="date" id="waktuTanggal" required 
+                                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-imigrasi-navy outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                    Perkiraan Jam <span class="text-red-500">*</span>
+                                </label>
+                                <input type="time" id="waktuJam" required 
+                                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-imigrasi-navy outline-none transition">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BAGIAN C: RINCIAN INFORMASI ORANG ASING -->
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2 border-b border-slate-200 pb-2.5">
+                            <span class="w-6 h-6 rounded-full bg-imigrasi-navy text-imigrasi-amber font-bold text-xs flex items-center justify-center">C</span>
+                            <h3 class="font-display font-bold text-base text-imigrasi-navy">Rincian Informasi Kegiatan Orang Asing</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                    Perkiraan Jumlah WNA <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="wnaJumlah" required placeholder="Contoh: 3 Orang WNA" 
+                                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-imigrasi-navy outline-none transition">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                    Dugaan Kewarganegaraan / Ciri Fisik
+                                </label>
+                                <input type="text" id="wnaNegara" placeholder="Contoh: Tiongkok / Eropa / Tidak Diketahui" 
+                                    class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-imigrasi-navy outline-none transition">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-2">
+                                Kategori Indikasi Kegiatan Orang Asing (Bisa pilih lebih dari satu) <span class="text-red-500">*</span>
+                            </label>
+                            <div class="grid grid-cols-1 gap-2.5" id="checkboxGroupIndikasi">
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-blue-50/50 hover:border-blue-300 cursor-pointer transition">
+                                    <input type="checkbox" name="indikasi" value="Bekerja tanpa izin / Penyalahgunaan Izin Tinggal" class="mt-0.5 w-4 h-4 text-imigrasi-navy rounded border-slate-300 focus:ring-imigrasi-navy">
+                                    <div class="text-xs">
+                                        <span class="font-semibold text-slate-800 block">Bekerja Tanpa Izin / Penyalahgunaan Izin Tinggal</span>
+                                        <span class="text-slate-500">WNA melakukan pekerjaan fisik/profesional tidak sesuai visa atau izin tinggalnya.</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-blue-50/50 hover:border-blue-300 cursor-pointer transition">
+                                    <input type="checkbox" name="indikasi" value="Mengganggu ketertiban umum / Meresahkan warga" class="mt-0.5 w-4 h-4 text-imigrasi-navy rounded border-slate-300 focus:ring-imigrasi-navy">
+                                    <div class="text-xs">
+                                        <span class="font-semibold text-slate-800 block">Mengganggu Ketertiban Umum / Meresahkan Warga</span>
+                                        <span class="text-slate-500">Perilaku tidak menghormati norma lokal, membuat keributan, atau melanggar peraturan.</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-blue-50/50 hover:border-blue-300 cursor-pointer transition">
+                                    <input type="checkbox" name="indikasi" value="Diduga melewati batas izin tinggal (Overstay)" class="mt-0.5 w-4 h-4 text-imigrasi-navy rounded border-slate-300 focus:ring-imigrasi-navy">
+                                    <div class="text-xs">
+                                        <span class="font-semibold text-slate-800 block">Diduga Melewati Batas Izin Tinggal (Overstay) / Tanpa Dokumen</span>
+                                        <span class="text-slate-500">WNA tinggal lama di lingkungan warga tanpa kejelasan dokumen paspor/izin tinggal.</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-blue-50/50 hover:border-blue-300 cursor-pointer transition">
+                                    <input type="checkbox" name="indikasi" value="Tinggal di tempat tidak semestinya / Aktivitas mencurigakan" class="mt-0.5 w-4 h-4 text-imigrasi-navy rounded border-slate-300 focus:ring-imigrasi-navy">
+                                    <div class="text-xs">
+                                        <span class="font-semibold text-slate-800 block">Tinggal di Tempat Tidak Semestinya / Aktivitas Mencurigakan Lainnya</span>
+                                        <span class="text-slate-500">Menginap di rumah kos/kontrakan tertutup tanpa melapor ke pengurus RT/RW setempat.</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                                Kronologi / Deskripsi Singkat Kejadian <span class="text-red-500">*</span>
+                            </label>
+                            <textarea id="wnaKronologi" rows="3" required placeholder="Ceritakan secara singkat aktivitas orang asing yang Anda lihat atau ketahui..." 
+                                class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-imigrasi-navy outline-none transition"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- BAGIAN D: BUKTI PENDUKUNG -->
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2 border-b border-slate-200 pb-2.5">
+                            <span class="w-6 h-6 rounded-full bg-imigrasi-navy text-imigrasi-amber font-bold text-xs flex items-center justify-center">D</span>
+                            <h3 class="font-display font-bold text-base text-imigrasi-navy">Unggah Bukti Pendukung (Foto / Video / Dokumen)</h3>
+                        </div>
+
+                        <div class="border-2 border-dashed border-slate-300 hover:border-imigrasi-amber rounded-2xl p-5 text-center bg-slate-50/60 transition cursor-pointer" onclick="document.getElementById('fileUpload').click()">
+                            <input type="file" id="fileUpload" accept="image/*,video/*,.pdf" class="hidden" onchange="handleFileSelect(event)">
+                            <div id="uploadPlaceholder">
+                                <div class="w-12 h-12 rounded-full bg-amber-100 text-imigrasi-gold flex items-center justify-center mx-auto mb-2">
+                                    <i class="ph-bold ph-camera-plus text-2xl"></i>
+                                </div>
+                                <p class="text-xs font-semibold text-slate-700">Ketuk untuk mengambil foto/video atau unggah dokumen</p>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Mendukung JPG, PNG, MP4, atau PDF (Maks. 25 MB)</p>
+                            </div>
+                            <div id="uploadPreview" class="hidden flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 text-left">
+                                <div class="flex items-center gap-3">
+                                    <img id="uploadThumbImg" src="" alt="Preview Bukti" class="hidden w-12 h-12 rounded-lg object-cover border border-slate-200 flex-shrink-0">
+                                    <div id="uploadIconBox" class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0">
+                                        <i class="ph-fill ph-file-image text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p id="fileNameText" class="text-xs font-bold text-slate-800 truncate max-w-[200px]">foto_kegiatan_wna.jpg</p>
+                                        <p id="fileSizeText" class="text-[10px] text-emerald-600 font-medium">Siap disimpan ke Cloud • Terenkripsi</p>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="clearFile(event)" class="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-1">Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Submit -->
+                    <div class="pt-2">
+                        <button type="submit" id="btnSubmitReport" class="w-full bg-gradient-to-r from-imigrasi-navy to-imigrasi-blue hover:from-imigrasi-dark hover:to-imigrasi-navy text-white font-display font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-imigrasi-navy/25 flex items-center justify-center gap-2.5 text-sm sm:text-base transition transform active:scale-[0.99]">
+                            <i class="ph-bold ph-paper-plane-tilt text-lg text-imigrasi-amber"></i>
+                            <span id="btnSubmitText">Kirim Laporan "LAGI ASIK" ke Cloud</span>
+                        </button>
+                        <p class="text-center text-[11px] text-slate-400 mt-3">
+                            Layanan <strong>LAGI ASIK</strong> terhubung secara *real-time* ke Cloud Database Seksi Inteldakim Kantor Imigrasi Kelas II TPI Bintan.
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+
+        <!-- ================================================================= -->
+        <!-- TAB 2: DASHBOARD MONITORING PETUGAS "LAGI ASIK" (INTELDAKIM)      -->
+        <!-- DILENGKAPI PORTAL PROTEKSI LOGIN KHUSUS PETUGAS                   -->
+        <!-- ================================================================= -->
+        <section id="view-dashboard" class="hidden space-y-6">
+            
+            <!-- 2A. PORTAL LOGIN PETUGAS INTELDAKIM (RESTRICTED AREA) -->
+            <div id="officer-login-gate" class="max-w-lg mx-auto my-4">
+                <div class="bg-white rounded-3xl shadow-2xl border border-slate-200/90 overflow-hidden">
+                    <!-- Header Portal Keamanan -->
+                    <div class="bg-gradient-to-br from-imigrasi-navy via-[#102A4C] to-imigrasi-dark text-white p-6 sm:p-7 text-center relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-imigrasi-amber/15 blur-2xl pointer-events-none"></div>
+                        
+                        <div class="w-16 h-16 rounded-2xl bg-white/10 border border-imigrasi-amber/50 flex items-center justify-center mx-auto mb-3 shadow-inner text-imigrasi-amber">
+                            <i class="ph-fill ph-shield-lock text-4xl"></i>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 bg-red-500/20 text-red-300 border border-red-400/30 text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full mb-2">
+                            <i class="ph-fill ph-lock-key"></i>
+                            <span>RESTRICTED AREA • KHUSUS PETUGAS</span>
+                        </span>
+                        <h2 class="font-display font-extrabold text-xl sm:text-2xl text-white">
+                            Portal Otorisasi Petugas "LAGI ASIK"
+                        </h2>
+                        <p class="text-xs text-slate-300 mt-1">
+                            Seksi Intelijen dan Penindakan Keimigrasian (Inteldakim)<br>
+                            <strong class="text-amber-300">Kantor Imigrasi Kelas II TPI Bintan</strong>
+                        </p>
+                    </div>
+
+                    <!-- Form Login Petugas -->
+                    <form id="officerLoginForm" onsubmit="handleOfficerLogin(event)" class="p-6 sm:p-7 space-y-4">
+                        
+                        <!-- Pesan Error Validasi -->
+                        <div id="loginErrorAlert" class="hidden bg-red-50 border border-red-300 text-red-800 rounded-2xl p-3.5 text-xs flex items-start gap-2.5">
+                            <i class="ph-fill ph-warning-octagon text-red-600 text-lg flex-shrink-0 mt-0.5"></i>
+                            <div>
+                                <strong class="font-bold block">Akses Ditolak!</strong>
+                                <span id="loginErrorText">NIP/Username atau Kode PIN Keamanan tidak sesuai dengan kredensial Seksi Inteldakim.</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                                Pilih Otoritas / Jabatan Petugas <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <i class="ph-fill ph-identification-badge absolute left-3.5 top-3 text-imigrasi-navy text-base"></i>
+                                <select id="loginRoleSelect" onchange="syncRolePlaceholder()" class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold text-imigrasi-navy focus:bg-white focus:ring-2 focus:ring-imigrasi-navy outline-none transition">
+                                    <option value="Kasi Inteldakim">Kepala Seksi Inteldakim (Pejabat Disposisi)</option>
+                                    <option value="Analis Keimigrasian">Analis / Operator Inteldakim (Verifikator)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                                NIP / Username Petugas <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <i class="ph ph-user-circle-gear absolute left-3.5 top-3 text-slate-400 text-base"></i>
+                                <input type="text" id="loginNipInput" required placeholder="Contoh: 198604122009121002 atau kasi_inteldakim" 
+                                    class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-imigrasi-navy outline-none transition">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                                Kode Akses / PIN Keamanan Inteldakim <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <i class="ph ph-key absolute left-3.5 top-3 text-slate-400 text-base"></i>
+                                <input type="password" id="loginPinInput" required placeholder="Masukkan PIN Keamanan..." 
+                                    class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-imigrasi-navy outline-none transition">
+                                <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 p-1">
+                                    <i id="eyeIconPin" class="ph ph-eye text-base"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-imigrasi-navy to-imigrasi-blue hover:from-imigrasi-dark hover:to-imigrasi-navy text-white font-display font-bold py-3 px-5 rounded-xl shadow-lg shadow-imigrasi-navy/20 flex items-center justify-center gap-2 text-sm transition">
+                            <i class="ph-bold ph-sign-in text-imigrasi-amber text-lg"></i>
+                            <span>Buka Kunci Dashboard Monitoring</span>
+                        </button>
+
+                        <!-- Box Kredensial Demo & Login Cepat 1-Klik untuk Seminar Aksi Perubahan -->
+                        <div class="mt-5 pt-4 border-t border-slate-200 bg-amber-50/70 rounded-2xl p-4 border border-amber-200/80 space-y-3">
+                            <div class="flex items-start gap-2.5">
+                                <i class="ph-fill ph-presentation-chart text-imigrasi-gold text-lg flex-shrink-0 mt-0.5"></i>
+                                <div class="text-[11px] text-slate-700 leading-relaxed">
+                                    <strong class="text-imigrasi-navy block">Panel Simulasi Presentasi / Seminar Aksi Perubahan:</strong>
+                                    PIN Keamanan Default: <code class="bg-white px-1.5 py-0.5 rounded border border-amber-300 font-mono font-bold text-imigrasi-navy">inteldakim2026</code> atau <code class="bg-white px-1.5 py-0.5 rounded border border-amber-300 font-mono font-bold text-imigrasi-navy">bintan2026</code>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <button type="button" onclick="quickDemoLogin('Kasi Inteldakim')" class="bg-imigrasi-navy hover:bg-imigrasi-blue text-white font-semibold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition">
+                                    <i class="ph-fill ph-stamp text-imigrasi-amber"></i>
+                                    <span>1-Klik Login Kasi Inteldakim</span>
+                                </button>
+                                <button type="button" onclick="quickDemoLogin('Analis Keimigrasian')" class="bg-white hover:bg-slate-100 text-imigrasi-navy border border-slate-300 font-semibold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow-sm transition">
+                                    <i class="ph-fill ph-user-check text-blue-600"></i>
+                                    <span>1-Klik Login Operator/Analis</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 2B. ISI DASHBOARD MONITORING (TERBUKA SETELAH PETUGAS LOGIN) -->
+            <div id="officer-dashboard-content" class="hidden space-y-6">
+            
+                <!-- Bar Status Petugas Aktif & Tombol Kunci Kembali -->
+                <div class="bg-emerald-950 text-white rounded-2xl px-4 py-3 border border-emerald-500/40 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 no-print">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 flex-shrink-0">
+                            <i class="ph-fill ph-shield-check text-xl"></i>
+                        </div>
+                        <div class="text-xs">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-bold text-emerald-300 uppercase tracking-wider">SESI OTORISASI PETUGAS AKTIF:</span>
+                                <strong id="activeOfficerName" class="text-white bg-white/10 px-2 py-0.5 rounded">Kepala Seksi Inteldakim</strong>
+                                <span id="activeOfficerNip" class="font-mono text-[11px] text-amber-300">NIP. 198604122009121002</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mt-0.5">
+                                Akses penuh ke data rahasia pelapor & disposisi elektronik LAGI ASIK • Waktu Login: <span id="activeLoginTime">--:-- WIB</span>
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="handleOfficerLogout()" class="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center justify-center gap-1.5 shadow transition">
+                        <i class="ph-bold ph-lock-key"></i>
+                        <span>Kunci / Logout Petugas</span>
+                    </button>
+                </div>
+
+                <!-- Top Banner Dashboard -->
+                <div class="bg-gradient-to-r from-imigrasi-navy via-[#122b4d] to-imigrasi-navy text-white rounded-2xl p-6 shadow-md flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="bg-imigrasi-amber text-imigrasi-dark text-[11px] font-extrabold px-2.5 py-0.5 rounded-md uppercase">
+                                DASHBOARD LAGI ASIK
+                            </span>
+                            <span id="dashboardCloudBadge" class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                CLOUD DATABASE TERHUBUNG (REAL-TIME SYNC AKTIF)
+                            </span>
+                            <span class="text-xs text-amber-300 font-medium">Seksi Intelijen dan Penindakan Keimigrasian</span>
+                        </div>
+                        <h2 class="font-display font-extrabold text-xl sm:text-2xl mt-1.5">
+                            Sistem Monitoring Cloud "LAGI ASIK" — Imigrasi Bintan
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-0.5">
+                            pe<strong class="text-amber-300">LA</strong>poran ke<strong class="text-amber-300">GI</strong>atan orang <strong class="text-amber-300">ASI</strong>ng yang mencuri<strong class="text-amber-300">K</strong>an di Wilayah Kerja Kantor Imigrasi Kelas II TPI Bintan
+                        </p>
+                        <p class="text-[11px] text-slate-400 mt-1 font-mono">
+                            ID Sesi Cloud Terenkripsi: <span id="currentUserIdDisplay" class="text-amber-300 font-semibold">Memuat sesi cloud...</span>
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2.5 no-print">
+                        <button onclick="exportReportsToCSV()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 shadow transition" title="Unduh Rekapitulasi Laporan ke Format Excel/CSV">
+                            <i class="ph-bold ph-file-csv text-base"></i>
+                            <span>Unduh Excel / CSV</span>
+                        </button>
+                        <button onclick="seedSampleReportsToCloud(true)" class="bg-white/10 hover:bg-white/20 text-amber-300 border border-amber-400/30 text-xs font-semibold px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 transition" title="Muat ulang 3 sampel laporan realistis Kabupaten Bintan ke Cloud Database">
+                            <i class="ph-bold ph-database text-base"></i>
+                            <span>Reset Data Sampel</span>
+                        </button>
+                        <button onclick="window.print()" class="bg-imigrasi-amber hover:bg-amber-400 text-imigrasi-dark font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 shadow transition">
+                            <i class="ph-bold ph-printer text-base"></i>
+                            <span>Cetak Laporan</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4 KPI Cards Statistik -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-semibold text-slate-500 uppercase">Total Laporan Masuk</p>
+                            <p id="stat-total" class="font-display font-extrabold text-2xl sm:text-3xl text-imigrasi-navy mt-1">3</p>
+                            <p class="text-[11px] text-slate-400 mt-1">10 Kecamatan Wilayah Bintan</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-2xl bg-blue-50 text-imigrasi-blue flex items-center justify-center text-2xl">
+                            <i class="ph-fill ph-files"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-semibold text-amber-700 uppercase">Menunggu Verifikasi</p>
+                            <p id="stat-menunggu" class="font-display font-extrabold text-2xl sm:text-3xl text-amber-600 mt-1">1</p>
+                            <p class="text-[11px] text-slate-400 mt-1">Perlu telaah Analis Inteldakim</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl">
+                            <i class="ph-fill ph-clock-countdown"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-semibold text-indigo-700 uppercase">Ditindaklanjuti Tim</p>
+                            <p id="stat-proses" class="font-display font-extrabold text-2xl sm:text-3xl text-indigo-600 mt-1">2</p>
+                            <p class="text-[11px] text-slate-400 mt-1">Disposisi & Operasi Lapangan</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl">
+                            <i class="ph-fill ph-users-three"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-semibold text-emerald-700 uppercase">Selesai / Clear</p>
+                            <p id="stat-selesai" class="font-display font-extrabold text-2xl sm:text-3xl text-emerald-600 mt-1">0</p>
+                            <p class="text-[11px] text-slate-400 mt-1">Telah diverifikasi & tuntas</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl">
+                            <i class="ph-fill ph-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alur SOP Singkat pada Dashboard -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-imigrasi-navy flex items-center gap-1.5">
+                            <i class="ph-fill ph-flow-arrow text-imigrasi-gold text-base"></i>
+                            Alur SOP Tindak Lanjut Inovasi "LAGI ASIK" (Seksi Inteldakim)
+                        </span>
+                        <span class="text-[11px] text-slate-500">Standar Respons Cepat Pengawasan Keimigrasian</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 text-xs">
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-amber-500 text-white font-bold flex items-center justify-center flex-shrink-0">1</span>
+                            <div>
+                                <span class="font-bold text-slate-800 block">Scan QR LAGI ASIK</span>
+                                <span class="text-[11px] text-slate-500">Masyarakat pindai barcode</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-orange-500 text-white font-bold flex items-center justify-center flex-shrink-0">2</span>
+                            <div>
+                                <span class="font-bold text-slate-800 block">Input Form & Bukti</span>
+                                <span class="text-[11px] text-slate-500">Tiket otomatis diterbitkan</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center flex-shrink-0">3</span>
+                            <div>
+                                <span class="font-bold text-slate-800 block">Verifikasi Analis</span>
+                                <span class="text-[11px] text-slate-500">Telaah data & SIMKIM</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center flex-shrink-0">4</span>
+                            <div>
+                                <span class="font-bold text-slate-800 block">Disposisi Kasi Inteldakim</span>
+                                <span class="text-[11px] text-slate-500">Instruksi operasi lapangan</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex items-center gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center flex-shrink-0">5</span>
+                            <div>
+                                <span class="font-bold text-slate-800 block">Tindak Lanjut / Takim</span>
+                                <span class="text-[11px] text-slate-500">Operasi mandiri / gabungan</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter & Tabel Daftar Laporan -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <!-- Filter Bar -->
+                    <div class="p-4 sm:p-5 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-3 bg-slate-50/50 no-print">
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                            <div class="relative">
+                                <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-slate-400"></i>
+                                <input type="text" id="filterSearch" oninput="renderReportTable()" placeholder="Cari tiket, lokasi, kewarganegaraan..." 
+                                    class="pl-9 pr-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-imigrasi-navy outline-none w-full sm:w-64">
+                            </div>
+
+                            <select id="filterKecamatan" onchange="renderReportTable()" class="px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-imigrasi-navy outline-none">
+                                <option value="ALL">Semua Kecamatan (10 Wilayah)</option>
+                                <option value="Bintan Utara">Kec. Bintan Utara</option>
+                                <option value="Seri Kuala Lobam">Kec. Seri Kuala Lobam</option>
+                                <option value="Teluk Sebong">Kec. Teluk Sebong</option>
+                                <option value="Gunung Kijang">Kec. Gunung Kijang</option>
+                                <option value="Bintan Timur">Kec. Bintan Timur</option>
+                                <option value="Toapaya">Kec. Toapaya</option>
+                                <option value="Teluk Bintan">Kec. Teluk Bintan</option>
+                                <option value="Mantang">Kec. Mantang</option>
+                                <option value="Bintan Pesisir">Kec. Bintan Pesisir</option>
+                                <option value="Tambelan">Kec. Tambelan</option>
+                            </select>
+
+                            <select id="filterStatus" onchange="renderReportTable()" class="px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-imigrasi-navy outline-none">
+                                <option value="ALL">Semua Status Tindak Lanjut</option>
+                                <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+                                <option value="Verifikasi Analis">Verifikasi Analis</option>
+                                <option value="Disposisi Kasi Inteldakim">Disposisi Kasi Inteldakim</option>
+                                <option value="Penurunan Tim Lapangan">Penurunan Tim Lapangan</option>
+                                <option value="Selesai">Selesai</option>
+                            </select>
+                        </div>
+
+                        <div class="text-xs text-slate-500 font-medium">
+                            Menampilkan <strong id="showingCount" class="text-slate-800">3</strong> laporan masyarakat
+                        </div>
+                    </div>
+
+                    <!-- Tabel Responsif -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100/80 text-slate-600 text-[11px] font-bold uppercase tracking-wider border-b border-slate-200">
+                                    <th class="py-3.5 px-4">No. Tiket & Waktu</th>
+                                    <th class="py-3.5 px-4">Kecamatan & Lokasi</th>
+                                    <th class="py-3.5 px-4">Pelapor</th>
+                                    <th class="py-3.5 px-4">Indikasi Kegiatan WNA</th>
+                                    <th class="py-3.5 px-4">Status SOP</th>
+                                    <th class="py-3.5 px-4 text-right no-print">Aksi Petugas</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportTableBody" class="divide-y divide-slate-200 text-xs sm:text-sm">
+                                <!-- Diisi via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div> <!-- Akhir #officer-dashboard-content -->
+        </section>
+
+
+        <!-- ================================================================= -->
+        <!-- TAB 3: KIT PUBLIKASI & STIKER QR CODE "LAGI ASIK"                 -->
+        <!-- ================================================================= -->
+        <section id="view-poster" class="hidden space-y-6">
+            
+            <!-- Panel Pengaturan Link QR Code & Panduan Publish Siap Pakai -->
+            <div class="max-w-4xl mx-auto bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4 no-print">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div class="flex items-start gap-3.5">
+                        <div class="w-11 h-11 rounded-2xl bg-amber-100 text-imigrasi-gold flex items-center justify-center flex-shrink-0 text-2xl">
+                            <i class="ph-fill ph-rocket-launch"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">SIAP DIPUBLIKASIKAN (PRODUCTION READY)</span>
+                            <h3 class="font-display font-bold text-base text-imigrasi-navy mt-0.5">Generator QR Code Dinamis & Kit Publikasi "LAGI ASIK"</h3>
+                            <p class="text-xs text-slate-600 mt-0.5">Masukkan tautan (URL) tempat website ini di-publish agar QR Code pada poster di bawah otomatis mengarah ke formulir pelaporan masyarakat.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button onclick="window.print()" class="w-full sm:w-auto bg-imigrasi-navy hover:bg-imigrasi-blue text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 transition shadow">
+                            <i class="ph-bold ph-printer text-imigrasi-amber text-base"></i>
+                            <span>Cetak Poster / Simpan PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Input URL Tujuan QR Code -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-end bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">
+                            Tautan / URL Tujuan Saat Masyarakat Scan Barcode QR:
+                        </label>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="customQrUrlInput" oninput="updateDynamicQrCode()" placeholder="https://lagiasik-bintan.netlify.app/?mode=publik" 
+                                class="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-mono focus:ring-2 focus:ring-imigrasi-navy outline-none">
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-1">
+                            Tips: Tambahkan akhiran <code class="bg-amber-100 text-imigrasi-navy px-1 rounded font-bold">?mode=publik</code> pada link agar masyarakat langsung masuk ke tampilan formulir bersih.
+                        </p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="useCurrentBrowserUrl()" class="flex-1 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs font-semibold py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5">
+                            <i class="ph-bold ph-globe"></i>
+                            <span>Gunakan URL Aktif</span>
+                        </button>
+                        <button type="button" onclick="copyQrLink()" class="bg-imigrasi-amber hover:bg-amber-400 text-imigrasi-dark text-xs font-bold py-2.5 px-3.5 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="ph-bold ph-copy"></i>
+                            <span>Salin Link</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pratinjau Poster Resmi LAGI ASIK -->
+            <div class="max-w-2xl mx-auto bg-gradient-to-b from-imigrasi-navy via-[#0F294A] to-imigrasi-dark text-white rounded-3xl shadow-2xl border-4 border-imigrasi-amber/80 overflow-hidden relative p-6 sm:p-10">
+                
+                <!-- Ornamen Latar -->
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-imigrasi-amber/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Kop Poster -->
+                <div class="flex flex-col items-center text-center border-b border-white/15 pb-5 relative z-10">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-12 h-12 rounded-2xl bg-white/10 border border-imigrasi-amber/50 flex items-center justify-center text-imigrasi-amber shadow">
+                            <i class="ph-fill ph-scales text-2xl"></i>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-[10px] sm:text-xs font-bold tracking-widest uppercase text-amber-300">Kementerian Imigrasi dan Pemasyarakatan RI</p>
+                            <p class="text-sm sm:text-base font-display font-extrabold text-white">KANTOR IMIGRASI KELAS II TPI BINTAN</p>
+                            <p class="text-[11px] text-slate-300">Seksi Intelijen dan Penindakan Keimigrasian (Inteldakim)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Call to Action Utama LAGI ASIK -->
+                <div class="text-center my-6 relative z-10">
+                    <span class="inline-block bg-imigrasi-amber text-imigrasi-dark font-display font-extrabold text-xs uppercase tracking-wider px-4 py-1 rounded-full mb-3 shadow-md">
+                        Inovasi Pengawasan Orang Asing Berbasis Masyarakat
+                    </span>
+                    <h2 class="font-display font-extrabold text-2xl sm:text-4xl leading-tight text-white">
+                        ADA WNA MENCURIGAKAN? <br>
+                        <span class="text-amber-400 underline decoration-amber-400/40">"LAGI ASIK" AJA!</span>
+                    </h2>
+                    <div class="mt-3 inline-block bg-white/10 border border-white/20 rounded-2xl px-4 py-2 text-xs sm:text-sm text-slate-200">
+                        pe<strong class="text-amber-400 font-extrabold">LA</strong>poran ke<strong class="text-amber-400 font-extrabold">GI</strong>atan orang <strong class="text-amber-400 font-extrabold">ASI</strong>ng yang mencuri<strong class="text-amber-400 font-extrabold">K</strong>an
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-2.5 max-w-lg mx-auto">
+                        Sampaikan informasi atau laporan secara langsung melalui ponsel Anda. Partisipasi Anda menjaga kedaulatan dan ketertiban wilayah Kabupaten Bintan.
+                    </p>
+                </div>
+
+                <!-- Kotak QR Code Interaktif -->
+                <div class="bg-white text-slate-800 rounded-3xl p-6 max-w-sm mx-auto shadow-2xl border-2 border-amber-300 text-center relative z-10">
+                    <div class="inline-flex items-center gap-1.5 bg-imigrasi-navy text-imigrasi-amber text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full mb-3">
+                        <i class="ph-bold ph-qr-code"></i>
+                        <span>SCAN BARCODE "LAGI ASIK"</span>
+                    </div>
+                    
+                    <!-- Real Scannable QR Code Image with SVG Fallback -->
+                    <div onclick="switchTab('form')" title="Klik untuk simulasi Scan QR Code LAGI ASIK" class="w-52 h-52 mx-auto bg-white p-2.5 rounded-2xl border-2 border-slate-200 shadow-inner cursor-pointer group relative flex items-center justify-center hover:border-imigrasi-amber transition">
+                        <img id="dynamicQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=6&color=0B1F3A&data=https%3A%2F%2Fs.id%2FLagiAsikBintan" alt="QR Code LAGI ASIK" class="w-full h-full object-contain rounded-lg" onerror="this.classList.add('hidden'); document.getElementById('fallbackQrSvg').classList.remove('hidden');">
+                        
+                        <svg id="fallbackQrSvg" viewBox="0 0 120 120" class="hidden w-full h-full text-imigrasi-navy">
+                            <path fill="currentColor" d="M10,10 h28 v28 h-28 z M14,14 v20 h20 v-20 z M18,18 h12 v12 h-12 z"/>
+                            <path fill="currentColor" d="M82,10 h28 v28 h-28 z M86,14 v20 h20 v-20 z M90,18 h12 v12 h-12 z"/>
+                            <path fill="currentColor" d="M10,82 h28 v28 h-28 z M14,86 v20 h20 v-20 z M18,90 h12 v12 h-12 z"/>
+                            <g fill="currentColor">
+                                <rect x="44" y="10" width="4" height="4"/><rect x="52" y="10" width="8" height="4"/><rect x="64" y="10" width="4" height="8"/><rect x="72" y="14" width="4" height="4"/>
+                                <rect x="44" y="18" width="8" height="4"/><rect x="56" y="22" width="4" height="8"/><rect x="68" y="22" width="8" height="4"/>
+                                <rect x="44" y="30" width="4" height="8"/><rect x="52" y="34" width="12" height="4"/><rect x="72" y="30" width="4" height="8"/>
+                                <rect x="10" y="44" width="8" height="4"/><rect x="22" y="44" width="4" height="8"/><rect x="30" y="48" width="8" height="4"/>
+                                <rect x="10" y="56" width="4" height="8"/><rect x="18" y="60" width="8" height="4"/><rect x="30" y="56" width="4" height="12"/>
+                                <rect x="82" y="44" width="8" height="4"/><rect x="94" y="44" width="4" height="8"/><rect x="102" y="48" width="8" height="4"/>
+                                <rect x="44" y="82" width="8" height="4"/><rect x="56" y="86" width="4" height="8"/><rect x="64" y="82" width="12" height="4"/>
+                                <rect x="82" y="82" width="12" height="4"/><rect x="98" y="82" width="4" height="8"/><rect x="86" y="90" width="8" height="8"/>
+                            </g>
+                        </svg>
+
+                        <!-- Center Badge on QR -->
+                        <div class="absolute w-12 h-10 rounded-xl bg-imigrasi-navy text-imigrasi-amber border-2 border-white shadow-md flex flex-col items-center justify-center leading-none pointer-events-none">
+                            <span class="text-[7px] font-extrabold text-white">LAGI</span>
+                            <span class="text-[8px] font-extrabold text-imigrasi-amber">ASIK</span>
+                        </div>
+                        <!-- Hover Overlay -->
+                        <div class="absolute inset-0 bg-imigrasi-navy/85 rounded-xl opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center text-white p-3 no-print">
+                            <i class="ph-bold ph-hand-tap text-2xl text-imigrasi-amber mb-1"></i>
+                            <span class="text-xs font-bold">Klik untuk Buka Form "LAGI ASIK"</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 bg-slate-100 rounded-xl py-1.5 px-3 inline-flex items-center gap-1.5 text-xs font-mono font-bold text-imigrasi-navy max-w-full overflow-hidden">
+                        <i class="ph-bold ph-link text-imigrasi-gold flex-shrink-0"></i>
+                        <span id="posterShortlinkText" class="truncate">s.id/LagiAsikBintan</span>
+                    </div>
+                </div>
+
+                <!-- 3 Langkah Mudah -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-7 relative z-10">
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5 text-center">
+                        <div class="w-8 h-8 rounded-full bg-imigrasi-amber text-imigrasi-dark font-extrabold text-sm flex items-center justify-center mx-auto mb-2">1</div>
+                        <h4 class="font-bold text-xs text-white">Scan Barcode</h4>
+                        <p class="text-[11px] text-slate-300 mt-0.5">Pindai QR Code LAGI ASIK dengan kamera HP Anda.</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5 text-center">
+                        <div class="w-8 h-8 rounded-full bg-imigrasi-amber text-imigrasi-dark font-extrabold text-sm flex items-center justify-center mx-auto mb-2">2</div>
+                        <h4 class="font-bold text-xs text-white">Isi Form LAGI ASIK</h4>
+                        <p class="text-[11px] text-slate-300 mt-0.5">Lengkapi lokasi kecamatan, kronologi & foto/video.</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-3.5 text-center">
+                        <div class="w-8 h-8 rounded-full bg-imigrasi-amber text-imigrasi-dark font-extrabold text-sm flex items-center justify-center mx-auto mb-2">3</div>
+                        <h4 class="font-bold text-xs text-white">Tindak Lanjut Cepat</h4>
+                        <p class="text-[11px] text-slate-300 mt-0.5">Tim Inteldakim memverifikasi & menindaklanjuti laporan.</p>
+                    </div>
+                </div>
+
+                <!-- Footer Poster -->
+                <div class="mt-6 pt-5 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-300 relative z-10">
+                    <div class="flex items-center gap-2">
+                        <i class="ph-fill ph-lock-key text-emerald-400 text-lg"></i>
+                        <span><strong>IDENTITAS PELAPOR DIJAMIN RAHASIA</strong></span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-xl text-white font-semibold">
+                        <i class="ph-fill ph-map-pin text-imigrasi-amber"></i>
+                        <span>Jl. Ahmad Yani No. 31, Tanjung Uban, Kab. Bintan</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 1: KONFIRMASI SUKSES KIRIM LAPORAN (NOMOR TIKET OTOMATIS)   -->
+    <!-- ================================================================= -->
+    <div id="successModal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 text-center animate-fade-in">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4 shadow-inner">
+                <i class="ph-fill ph-check-circle text-4xl"></i>
+            </div>
+            
+            <span class="text-[11px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full">
+                Laporan "LAGI ASIK" Berhasil Diterima
+            </span>
+            
+            <h3 class="font-display font-extrabold text-xl text-imigrasi-navy mt-3">
+                Terima Kasih Atas Partisipasi Anda
+            </h3>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                Laporan Anda telah tercatat di Sistem Monitoring <strong>LAGI ASIK</strong> Seksi Intelijen dan Penindakan Keimigrasian Kantor Imigrasi Kelas II TPI Bintan.
+            </p>
+
+            <!-- Kotak Nomor Tiket -->
+            <div class="my-5 bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-4 text-left space-y-2">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                    <span class="text-xs text-slate-500">Nomor Tiket LAGI ASIK:</span>
+                    <span id="modalTicketId" class="font-mono font-extrabold text-xs sm:text-sm text-imigrasi-navy bg-amber-100 px-2.5 py-0.5 rounded">#LAGIASIK-BTN-2026-0089</span>
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-slate-500">Wilayah Kecamatan:</span>
+                    <strong id="modalKecamatan" class="text-slate-800">Kec. Teluk Sebong</strong>
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-slate-500">Status Saat Ini:</span>
+                    <span class="text-amber-700 font-semibold">Menunggu Verifikasi Petugas</span>
+                </div>
+            </div>
+
+            <!-- Tombol Aksi Modal -->
+            <div class="space-y-2.5">
+                <button onclick="simulateWhatsAppForward()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow transition">
+                    <i class="ph-fill ph-whatsapp-logo text-lg"></i>
+                    <span>Konfirmasi Cepat via WhatsApp Hotline Inteldakim</span>
+                </button>
+                
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <button onclick="closeSuccessModalAndGoDashboard()" class="bg-imigrasi-navy hover:bg-imigrasi-blue text-white font-semibold text-xs py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5">
+                        <i class="ph-bold ph-chart-bar"></i>
+                        <span>Lihat di Dashboard</span>
+                    </button>
+                    <button onclick="closeSuccessModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl transition">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 2: DETAIL LAPORAN & DISPOSISI PETUGAS INTELDAKIM            -->
+    <!-- ================================================================= -->
+    <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden max-h-[90vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="bg-imigrasi-navy text-white px-6 py-4 flex items-center justify-between">
+                <div>
+                    <span id="detailModalTicket" class="font-mono text-xs font-bold text-imigrasi-amber">#LAGIASIK-BTN-2026-0088</span>
+                    <h3 class="font-display font-bold text-base sm:text-lg">Lembar Verifikasi & Disposisi Laporan Masyarakat</h3>
+                </div>
+                <button onclick="closeDetailModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div id="detailModalContent" class="p-6 overflow-y-auto space-y-4 text-xs sm:text-sm">
+                <!-- Diisi via JS -->
+            </div>
+
+            <!-- Modal Footer / Update Status -->
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                <div class="flex flex-wrap items-center gap-2">
+                    <label class="text-xs font-bold text-slate-700 whitespace-nowrap">Ubah Status SOP:</label>
+                    <select id="detailStatusSelect" class="px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold text-imigrasi-navy focus:ring-2 focus:ring-imigrasi-navy outline-none">
+                        <option value="Menunggu Verifikasi">1. Menunggu Verifikasi</option>
+                        <option value="Verifikasi Analis">2. Verifikasi Analis Inteldakim</option>
+                        <option value="Disposisi Kasi Inteldakim">3. Disposisi Kasi Inteldakim</option>
+                        <option value="Penurunan Tim Lapangan">4. Penurunan Tim Lapangan (Operasi)</option>
+                        <option value="Selesai">5. Selesai / Ditindaklanjuti</option>
+                    </select>
+                    <button onclick="deleteReportFromCloud()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-semibold text-xs px-3 py-2 rounded-xl flex items-center gap-1 transition" title="Hapus laporan uji coba dari Cloud">
+                        <i class="ph-bold ph-trash"></i>
+                        <span>Hapus</span>
+                    </button>
+                </div>
+                <div class="flex flex-wrap items-center justify-end gap-2">
+                    <button onclick="forwardDetailToWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 shadow transition">
+                        <i class="ph-fill ph-whatsapp-logo text-base"></i>
+                        <span>Teruskan ke WA Tim</span>
+                    </button>
+                    <button onclick="saveStatusUpdate()" id="btnSaveStatusCloud" class="bg-imigrasi-navy hover:bg-imigrasi-blue text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow transition">
+                        <i class="ph-bold ph-cloud-arrow-up text-base text-imigrasi-amber"></i>
+                        <span>Simpan Disposisi ke Cloud</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- MODAL 3: LACAK STATUS TIKET LAPORAN MASYARAKAT                    -->
+    <!-- ================================================================= -->
+    <div id="trackTicketModal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-imigrasi-navy text-imigrasi-amber flex items-center justify-center">
+                        <i class="ph-bold ph-magnifying-glass text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-sm sm:text-base text-imigrasi-navy">Lacak Status Tiket "LAGI ASIK"</h3>
+                        <p class="text-[11px] text-slate-500">Pantau progres tindak lanjut laporan Anda</p>
+                    </div>
+                </div>
+                <button onclick="closeTrackTicketModal()" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleTrackTicketSearch(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Masukkan Nomor Tiket Laporan:</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="trackTicketInput" required placeholder="Contoh: LAGIASIK-BTN-2026-0088" 
+                            class="flex-1 px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm font-mono uppercase focus:bg-white focus:ring-2 focus:ring-imigrasi-navy outline-none">
+                        <button type="submit" class="bg-imigrasi-navy hover:bg-imigrasi-blue text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow">
+                            Cari
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div id="trackTicketResult" class="mt-4 hidden">
+                <!-- Hasil pencarian tiket ditampilkan di sini -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toastBox" class="fixed bottom-5 right-5 z-50 hidden bg-imigrasi-dark text-white px-4 py-3 rounded-2xl shadow-xl border border-slate-700 flex items-center gap-3 text-xs sm:text-sm max-w-sm">
+        <i class="ph-fill ph-check-circle text-emerald-400 text-xl flex-shrink-0"></i>
+        <span id="toastMessage">Berhasil diperbarui</span>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-4 px-4 text-center text-xs text-slate-500 mt-auto no-print">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+            <p><strong>"LAGI ASIK"</strong> (Pelaporan Kegiatan Orang Asing yang Mencurigakan) — <strong>Kantor Imigrasi Kelas II TPI Bintan</strong></p>
+            <div class="flex items-center gap-3">
+                <span>Seksi Intelijen dan Penindakan Keimigrasian (Inteldakim)</span>
+                <button onclick="switchTab('dashboard')" class="text-slate-400 hover:text-imigrasi-navy underline text-[11px]">Portal Petugas</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================================================================= -->
+    <!-- FIREBASE CLOUD DATABASE (FIRESTORE) & APPLICATION LOGIC           -->
+    <!-- ================================================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Koordinat default per Kecamatan di Kabupaten Bintan
+        const kecamatanCoords = {
+            "Bintan Utara": "1.0728° N, 104.2215° E (Tanjung Uban)",
+            "Seri Kuala Lobam": "1.0042° N, 104.2418° E (Kawasan Lobam)",
+            "Teluk Sebong": "1.1485° N, 104.3310° E (Kawasan Lagoi / Sebong)",
+            "Gunung Kijang": "1.0289° N, 104.6214° E (Pantai Trikora / Kawal)",
+            "Bintan Timur": "0.8542° N, 104.5981° E (Kijang Kota)",
+            "Toapaya": "0.9712° N, 104.5319° E (Toapaya Asri)",
+            "Teluk Bintan": "1.0411° N, 104.4510° E (Tembeling / Pangkil)",
+            "Mantang": "0.7850° N, 104.5320° E (Pulau Mantang)",
+            "Bintan Pesisir": "0.8615° N, 104.7420° E (Kelong / Mapur)",
+            "Tambelan": "0.9912° N, 107.5618° E (Pulau Tambelan)"
+        };
+
+        // 3 Data Sampel Awal Realistis Wilayah Kerja Imigrasi Bintan (Lagoi, Kijang, Tambelan)
+        const initialBintanSampleReports = [
+            {
+                id: "LAGIASIK-BTN-2026-0088",
+                createdAtMs: 1793958000000,
+                tanggal: "2026-11-06",
+                jam: "09:40",
+                pelaporNama: "Hendra Saputra (Ketua RT)",
+                pelaporWa: "081270458821",
+                pelaporKategori: "Perangkat Desa / RT / RW",
+                kecamatan: "Teluk Sebong",
+                lokasiDetail: "Rumah kontrakan Jl. Raya Kota Baru KM 48, Desa Sebong Lagoi",
+                koordinat: "1.1485° N, 104.3310° E (Kawasan Lagoi / Sebong)",
+                wnaJumlah: "4 Orang WNA",
+                wnaNegara: "Diduga WN Tiongkok",
+                indikasi: ["Bekerja tanpa izin / Penyalahgunaan Izin Tinggal", "Tinggal di tempat tidak semestinya / Aktivitas mencurigakan"],
+                kronologi: "Terdapat 4 orang WNA yang mengontrak rumah warga selama 3 minggu terakhir di sekitar Desa Sebong Lagoi dan setiap pagi dijemput mobil proyek konstruksi, namun belum pernah melaporkan dokumen paspor/izin tinggal ke pengurus RT setempat.",
+                buktiFile: "foto_kontrakan_sebong_lagoi.jpg",
+                buktiDataUrl: "",
+                status: "Menunggu Verifikasi",
+                catatanPetugas: "Laporan masuk via QR LAGI ASIK. Menunggu verifikasi awal operator Seksi Inteldakim."
+            },
+            {
+                id: "LAGIASIK-BTN-2026-0087",
+                createdAtMs: 1793880900000,
+                tanggal: "2026-11-05",
+                jam: "16:15",
+                pelaporNama: "Suryadi (Anggota TIMPORA)",
+                pelaporWa: "085272119044",
+                pelaporKategori: "Petugas PIMPASA / Anggota TIMPORA",
+                kecamatan: "Bintan Timur",
+                lokasiDetail: "Area Gudang & Ruko Jl. Barek Motor, Kelurahan Kijang Kota",
+                koordinat: "0.8542° N, 104.5981° E (Kijang Kota)",
+                wnaJumlah: "3 Orang WNA",
+                wnaNegara: "WN Tiongkok & Malaysia",
+                indikasi: ["Bekerja tanpa izin / Penyalahgunaan Izin Tinggal"],
+                kronologi: "Informasi masyarakat terkait keberadaan 3 tenaga teknis asing yang melakukan aktivitas instalasi mesin di gudang Kijang Kota untuk dilakukan pengecekan kesesuaian jabatan dan lokasi kerja pada dokumen ITAS.",
+                buktiFile: "dokumentasi_gudang_kijang.jpg",
+                buktiDataUrl: "",
+                status: "Penurunan Tim Lapangan",
+                catatanPetugas: "Kasi Inteldakim telah mendisposisikan Tim Pengawasan Keimigrasian ke lokasi Kijang Kota untuk pemeriksaan dokumen."
+            },
+            {
+                id: "LAGIASIK-BTN-2026-0086",
+                createdAtMs: 1793775600000,
+                tanggal: "2026-11-04",
+                jam: "14:00",
+                pelaporNama: "Kaur Pemerintahan Desa",
+                pelaporWa: "082170884510",
+                pelaporKategori: "Perangkat Desa / RT / RW",
+                kecamatan: "Tambelan",
+                lokasiDetail: "Perairan Dermaga Kampung Melayu, Pulau Tambelan",
+                koordinat: "0.9912° N, 107.5618° E (Pulau Tambelan)",
+                wnaJumlah: "2 Orang WNA (Awak Kapal Yacht)",
+                wnaNegara: "WN Australia",
+                indikasi: ["Tinggal di tempat tidak semestinya / Aktivitas mencurigakan"],
+                kronologi: "Kapal layar (yacht) berbendera asing bersandar darurat karena cuaca buruk dan awak kapal turun membeli logistik di sekitar pelabuhan rakyat Pulau Tambelan.",
+                buktiFile: "foto_yacht_dermaga_tambelan.jpg",
+                buktiDataUrl: "",
+                status: "Disposisi Kasi Inteldakim",
+                catatanPetugas: "Koordinasi langsung dengan Pos TNI AL dan Polsek Tambelan melalui jaringan PIMPASA untuk pemeriksaan dokumen clearance keimigrasian."
+            }
+        ];
+
+        // State Aplikasi
+        let reportsData = [];
+        let activeDetailReportId = null;
+        let lastCreatedReport = null;
+        let isAnonimMode = false;
+        let selectedImageDataUrl = "";
+
+        // State Autentikasi Petugas Inteldakim (Proteksi Tab 2)
+        let isOfficerLoggedIn = false;
+        let isPublicOnlyMode = false;
+        let currentOfficerProfile = {
+            role: "Kepala Seksi Inteldakim",
+            nip: "198604122009121002",
+            loginTime: ""
+        };
+
+        // State Firebase Cloud
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+        let isCloudActive = false;
+        let hasAutoSeeded = false;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'lagiasik-imigrasi-bintan';
+
+        // Inisialisasi Halaman & Koneksi Cloud Firebase
+        async function initLagiAsikApp() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('waktuTanggal').value = today;
+            document.getElementById('waktuJam').value = "10:30";
+
+            // Deteksi apakah dibuka melalui scan QR masyarakat (?mode=publik)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('mode') === 'publik') {
+                isPublicOnlyMode = true;
+                applyPublicModeUI();
+            }
+
+            // Set URL default untuk QR Code Generator
+            const cleanOriginUrl = window.location.href.split('?')[0] + '?mode=publik';
+            const qrInput = document.getElementById('customQrUrlInput');
+            if (qrInput) {
+                qrInput.value = window.location.protocol.startsWith('http')
+                    ? cleanOriginUrl
+                    : 'https://s.id/LagiAsikBintan';
+                updateDynamicQrCode();
+            }
+
+            try {
+                if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                    const firebaseConfig = JSON.parse(__firebase_config);
+                    const app = initializeApp(firebaseConfig);
+                    auth = getAuth(app);
+                    db = getFirestore(app);
+
+                    // RULE 3: Auth Before Queries
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+
+                    onAuthStateChanged(auth, (user) => {
+                        currentUser = user;
+                        if (user) {
+                            isCloudActive = true;
+                            updateCloudBadgeUI(true, user.uid);
+                            startRealtimeFirestoreListener();
+                        }
+                    });
+                } else {
+                    // Fallback jika dibuka di luar environment cloud
+                    reportsData = [...initialBintanSampleReports];
+                    updateCloudBadgeUI(false, "Mode Lokal (Siap Konfigurasi Cloud)");
+                    renderReportTable();
+                    updateDashboardStats();
+                }
+            } catch (error) {
+                console.error("Inisialisasi Cloud Database:", error);
+                reportsData = [...initialBintanSampleReports];
+                updateCloudBadgeUI(false, "Mode Simulasi Lokal");
+                renderReportTable();
+                updateDashboardStats();
+            }
+        }
+
+        function updateCloudBadgeUI(connected, uidText) {
+            const dotNav = document.getElementById('cloudStatusDotNav');
+            const textNav = document.getElementById('cloudStatusTextNav');
+            const uidDisplay = document.getElementById('currentUserIdDisplay');
+
+            if (connected) {
+                if (dotNav) dotNav.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+                if (textNav) textNav.textContent = "Cloud Real-Time Aktif";
+                if (uidDisplay) uidDisplay.textContent = uidText;
+            } else {
+                if (dotNav) dotNav.className = "w-2 h-2 rounded-full bg-amber-400";
+                if (textNav) textNav.textContent = "Simulasi Lokal Aktif";
+                if (uidDisplay) uidDisplay.textContent = uidText;
+            }
+        }
+
+        // Listener Real-Time Firestore (RULE 1 & RULE 2)
+        function startRealtimeFirestoreListener() {
+            if (!currentUser || !db) return;
+
+            const reportsColRef = collection(db, 'artifacts', appId, 'public', 'data', 'lagiasik_reports');
+
+            onSnapshot(reportsColRef, async (snapshot) => {
+                // Jika koleksi di Cloud masih kosong pertama kali, semaikan 3 laporan sampel Bintan
+                if (snapshot.empty && !hasAutoSeeded) {
+                    hasAutoSeeded = true;
+                    await seedSampleReportsToCloud(false);
+                    return;
+                }
+
+                const fetched = [];
+                snapshot.forEach((docSnap) => {
+                    fetched.push(docSnap.data());
+                });
+
+                // Urutkan di memori JavaScript berdasarkan waktu terbaru (RULE 2)
+                fetched.sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
+
+                reportsData = fetched;
+                renderReportTable();
+                updateDashboardStats();
+            }, (error) => {
+                console.error("Firestore Listener Error:", error);
+                showToast("Gangguan sinkronisasi Cloud: " + error.message);
+            });
+        }
+
+        // Fungsi Menyemaikan 3 Data Sampel Realistis Kabupaten Bintan ke Cloud Firestore
+        async function seedSampleReportsToCloud(showNotification = true) {
+            if (!currentUser || !db) {
+                reportsData = [...initialBintanSampleReports];
+                renderReportTable();
+                updateDashboardStats();
+                if (showNotification) showToast("3 Data sampel Bintan dimuat ulang.");
+                return;
+            }
+
+            try {
+                for (const sample of initialBintanSampleReports) {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'lagiasik_reports', sample.id);
+                    await setDoc(docRef, sample);
+                }
+                if (showNotification) {
+                    showToast("3 Laporan Sampel Bintan (Lagoi, Kijang, Tambelan) berhasil disinkronkan ke Cloud!");
+                }
+            } catch (err) {
+                console.error("Gagal memuat sampel ke Cloud:", err);
+                showToast("Gagal menulis sampel ke Cloud Database.");
+            }
+        }
+
+        // Fungsi Berpindah Tab (Form Publik / Dashboard Inteldakim / Poster QR)
+        function switchTab(tabName) {
+            const views = ['form', 'dashboard', 'poster'];
+            views.forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
+                document.getElementById(`view-${v}`).classList.remove('block');
+                
+                const btn = document.getElementById(`tab-btn-${v}`);
+                btn.className = "flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition-all relative";
+            });
+
+            document.getElementById(`view-${tabName}`).classList.remove('hidden');
+            document.getElementById(`view-${tabName}`).classList.add('block');
+
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+            activeBtn.className = "flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-imigrasi-amber text-imigrasi-dark shadow relative";
+
+            if (tabName === 'dashboard') {
+                updateOfficerGateUI();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // =================================================================
+        // LOGIKA LOGIN & PROTEKSI AKSES PETUGAS INTELDAKIM (TAB 2)
+        // =================================================================
+        function updateOfficerGateUI() {
+            const loginGate = document.getElementById('officer-login-gate');
+            const dashboardContent = document.getElementById('officer-dashboard-content');
+            const navLockIcon = document.getElementById('nav-lock-icon');
+
+            if (isOfficerLoggedIn) {
+                loginGate.classList.add('hidden');
+                dashboardContent.classList.remove('hidden');
+                navLockIcon.className = "ph-fill ph-lock-key-open text-emerald-400 text-base";
+
+                document.getElementById('activeOfficerName').textContent = currentOfficerProfile.role;
+                document.getElementById('activeOfficerNip').textContent = `ID/NIP: ${currentOfficerProfile.nip}`;
+                document.getElementById('activeLoginTime').textContent = currentOfficerProfile.loginTime;
+            } else {
+                loginGate.classList.remove('hidden');
+                dashboardContent.classList.add('hidden');
+                navLockIcon.className = "ph-fill ph-lock-key text-amber-400 text-base";
+            }
+        }
+
+        function syncRolePlaceholder() {
+            const role = document.getElementById('loginRoleSelect').value;
+            const nipInput = document.getElementById('loginNipInput');
+            if (role === "Kasi Inteldakim") {
+                nipInput.placeholder = "Contoh: 198604122009121002 atau kasi_inteldakim";
+            } else {
+                nipInput.placeholder = "Contoh: 199308192017121001 atau operator_inteldakim";
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const pinInput = document.getElementById('loginPinInput');
+            const eyeIcon = document.getElementById('eyeIconPin');
+            if (pinInput.type === 'password') {
+                pinInput.type = 'text';
+                eyeIcon.className = 'ph ph-eye-slash text-base';
+            } else {
+                pinInput.type = 'password';
+                eyeIcon.className = 'ph ph-eye text-base';
+            }
+        }
+
+        function handleOfficerLogin(event) {
+            event.preventDefault();
+            const role = document.getElementById('loginRoleSelect').value;
+            const nip = document.getElementById('loginNipInput').value.trim();
+            const pin = document.getElementById('loginPinInput').value.trim();
+            const errorAlert = document.getElementById('loginErrorAlert');
+
+            // Validasi PIN Keamanan (mendukung PIN resmi demo seminar)
+            const validPins = ['inteldakim2026', 'bintan2026', 'imigrasi2026', '123456'];
+
+            if (nip.length >= 3 && validPins.includes(pin.toLowerCase())) {
+                errorAlert.classList.add('hidden');
+                completeOfficerLogin(role, nip);
+            } else {
+                errorAlert.classList.remove('hidden');
+                showToast("Akses Ditolak: Kode PIN Keamanan tidak sesuai.");
+            }
+        }
+
+        function quickDemoLogin(roleType) {
+            const defaultNip = roleType === 'Kasi Inteldakim'
+                ? '198604122009121002 (Kasi Inteldakim)'
+                : '199308192017121001 (Analis Inteldakim)';
+            document.getElementById('loginRoleSelect').value = roleType;
+            document.getElementById('loginNipInput').value = defaultNip;
+            document.getElementById('loginPinInput').value = 'inteldakim2026';
+            document.getElementById('loginErrorAlert').classList.add('hidden');
+            completeOfficerLogin(roleType, defaultNip);
+        }
+
+        function completeOfficerLogin(role, nip) {
+            const now = new Date();
+            const timeStr = now.toTimeString().slice(0, 5) + " WIB";
+
+            isOfficerLoggedIn = true;
+            currentOfficerProfile = {
+                role: role === 'Kasi Inteldakim' ? 'Kepala Seksi Inteldakim' : 'Analis / Operator Inteldakim',
+                nip: nip,
+                loginTime: timeStr
+            };
+
+            updateOfficerGateUI();
+            renderReportTable();
+            updateDashboardStats();
+            showToast(`Selamat datang, ${currentOfficerProfile.role}. Akses Dashboard dibuka.`);
+        }
+
+        function handleOfficerLogout() {
+            isOfficerLoggedIn = false;
+            document.getElementById('loginPinInput').value = "";
+            updateOfficerGateUI();
+            showToast("Dashboard Monitoring Inteldakim telah dikunci kembali.");
+        }
+
+        // Toggle Anonim / Inisial Pelapor
+        function toggleAnonymous() {
+            isAnonimMode = !isAnonimMode;
+            const namaInput = document.getElementById('pelaporNama');
+            const btnAnonim = document.getElementById('btnAnonim');
+
+            if (isAnonimMode) {
+                namaInput.value = "Pelapor Anonim (Dilindungi)";
+                namaInput.classList.add('bg-amber-50', 'border-amber-300', 'font-semibold');
+                btnAnonim.innerHTML = `<i class="ph-fill ph-check-circle text-emerald-600"></i><span>Mode Anonim Aktif</span>`;
+                showToast("Mode Pelapor Anonim diaktifkan. Identitas Anda dirahasiakan.");
+            } else {
+                namaInput.value = "";
+                namaInput.classList.remove('bg-amber-50', 'border-amber-300', 'font-semibold');
+                btnAnonim.innerHTML = `<i class="ph-bold ph-detective"></i><span>Gunakan Inisial / Anonim</span>`;
+            }
+        }
+
+        // Update Koordinat berdasarkan Kecamatan
+        function updateDefaultCoords() {
+            const kec = document.getElementById('lokasiKecamatan').value;
+            if (kec && kecamatanCoords[kec]) {
+                document.getElementById('gpsCoordsText').textContent = kecamatanCoords[kec];
+            }
+        }
+
+        // Simulasi Ambil Titik Koordinat GPS
+        function simulateGPS() {
+            const kecSelect = document.getElementById('lokasiKecamatan');
+            if (!kecSelect.value) {
+                kecSelect.value = "Teluk Sebong";
+            }
+            const coords = kecamatanCoords[kecSelect.value] || "1.0825° N, 104.4820° E (Wilayah Bintan)";
+            document.getElementById('gpsCoordsText').textContent = coords;
+            document.getElementById('gpsBox').classList.remove('hidden');
+            showToast("Titik koordinat GPS lokasi berhasil dikunci.");
+        }
+
+        // Kompresi Foto Bukti menjadi Thumbnail Ringan agar Tersimpan di Cloud Firestore (<100KB)
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            document.getElementById('uploadPlaceholder').classList.add('hidden');
+            document.getElementById('uploadPreview').classList.remove('hidden');
+            document.getElementById('fileNameText').textContent = file.name;
+            const sizeKB = Math.round(file.size / 1024);
+            document.getElementById('fileSizeText').textContent = `${sizeKB} KB • Siap disimpan ke Cloud`;
+
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const maxDim = 480;
+                        let w = img.width;
+                        let h = img.height;
+                        if (w > h && w > maxDim) {
+                            h = Math.round((h * maxDim) / w);
+                            w = maxDim;
+                        } else if (h > maxDim) {
+                            w = Math.round((w * maxDim) / h);
+                            h = maxDim;
+                        }
+                        canvas.width = w;
+                        canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, w, h);
+                        selectedImageDataUrl = canvas.toDataURL('image/jpeg', 0.65);
+
+                        const thumbImg = document.getElementById('uploadThumbImg');
+                        const iconBox = document.getElementById('uploadIconBox');
+                        thumbImg.src = selectedImageDataUrl;
+                        thumbImg.classList.remove('hidden');
+                        iconBox.classList.add('hidden');
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                selectedImageDataUrl = "";
+                document.getElementById('uploadThumbImg').classList.add('hidden');
+                document.getElementById('uploadIconBox').classList.remove('hidden');
+            }
+        }
+
+        function clearFile(event) {
+            if (event) event.stopPropagation();
+            document.getElementById('fileUpload').value = "";
+            selectedImageDataUrl = "";
+            document.getElementById('uploadPlaceholder').classList.remove('hidden');
+            document.getElementById('uploadPreview').classList.add('hidden');
+            document.getElementById('uploadThumbImg').classList.add('hidden');
+            document.getElementById('uploadIconBox').classList.remove('hidden');
+        }
+
+        // Tombol Isi Contoh Cepat (Memudahkan saat Demo Presentasi Seminar)
+        function fillDemoForm() {
+            document.getElementById('pelaporNama').value = "Rahmat Hidayat (Ketua RT 02)";
+            document.getElementById('pelaporWa').value = "081277889900";
+            document.getElementById('pelaporKategori').value = "Perangkat Desa / RT / RW";
+            document.getElementById('lokasiKecamatan').value = "Gunung Kijang";
+            document.getElementById('lokasiDetail').value = "Penginapan Pantai Trikora KM 38, Desa Teluk Bakau";
+            simulateGPS();
+            document.getElementById('wnaJumlah').value = "2 Orang WNA";
+            document.getElementById('wnaNegara').value = "Diduga WN Eropa";
+            
+            const checkboxes = document.querySelectorAll('input[name="indikasi"]');
+            checkboxes.forEach((cb, idx) => {
+                cb.checked = (idx === 0 || idx === 2);
+            });
+
+            document.getElementById('wnaKronologi').value = "Dua orang WNA menyewa cottage di sekitar Pantai Trikora lebih dari 60 hari dan terlihat membuka jasa pemandu wisata selam komersial tanpa izin resmi.";
+            
+            document.getElementById('uploadPlaceholder').classList.add('hidden');
+            document.getElementById('uploadPreview').classList.remove('hidden');
+            document.getElementById('fileNameText').textContent = "bukti_aktivitas_trikora.jpg";
+            document.getElementById('fileSizeText').textContent = "320 KB • Siap disimpan ke Cloud";
+
+            showToast("Contoh data laporan LAGI ASIK berhasil diisi otomatis.");
+        }
+
+        // Submit Formulir Laporan LAGI ASIK ke Cloud Firestore
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const checkedBoxes = Array.from(document.querySelectorAll('input[name="indikasi"]:checked')).map(cb => cb.value);
+            if (checkedBoxes.length === 0) {
+                showToast("Mohon pilih minimal 1 kategori indikasi kegiatan Orang Asing.");
+                return;
+            }
+
+            const btnSubmit = document.getElementById('btnSubmitReport');
+            const btnText = document.getElementById('btnSubmitText');
+            btnSubmit.disabled = true;
+            btnText.textContent = "Menyimpan ke Cloud Database...";
+
+            const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+            const ticketNum = `LAGIASIK-BTN-2026-${randomSuffix}`;
+            const kec = document.getElementById('lokasiKecamatan').value;
+            const fileName = !document.getElementById('uploadPreview').classList.contains('hidden')
+                ? document.getElementById('fileNameText').textContent
+                : "Tanpa Lampiran Foto";
+
+            const newReport = {
+                id: ticketNum,
+                createdAtMs: Date.now(),
+                tanggal: document.getElementById('waktuTanggal').value,
+                jam: document.getElementById('waktuJam').value,
+                pelaporNama: document.getElementById('pelaporNama').value,
+                pelaporWa: document.getElementById('pelaporWa').value,
+                pelaporKategori: document.getElementById('pelaporKategori').value,
+                kecamatan: kec,
+                lokasiDetail: document.getElementById('lokasiDetail').value,
+                koordinat: document.getElementById('gpsCoordsText').textContent,
+                wnaJumlah: document.getElementById('wnaJumlah').value,
+                wnaNegara: document.getElementById('wnaNegara').value || "Belum Diketahui",
+                indikasi: checkedBoxes,
+                kronologi: document.getElementById('wnaKronologi').value,
+                buktiFile: fileName,
+                buktiDataUrl: selectedImageDataUrl || "",
+                status: "Menunggu Verifikasi",
+                catatanPetugas: "Laporan diterima secara real-time melalui pemindaian QR Code LAGI ASIK oleh masyarakat.",
+                submittedByUid: currentUser ? currentUser.uid : "anon-local"
+            };
+
+            try {
+                if (currentUser && db) {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'lagiasik_reports', newReport.id);
+                    await setDoc(docRef, newReport);
+                } else {
+                    reportsData.unshift(newReport);
+                    renderReportTable();
+                    updateDashboardStats();
+                }
+
+                lastCreatedReport = newReport;
+
+                // Tampilkan Modal Tiket
+                document.getElementById('modalTicketId').textContent = `#${newReport.id}`;
+                document.getElementById('modalKecamatan').textContent = `Kec. ${newReport.kecamatan}`;
+                document.getElementById('successModal').classList.remove('hidden');
+
+                // Reset Form
+                document.getElementById('reportForm').reset();
+                document.getElementById('gpsBox').classList.add('hidden');
+                clearFile(null);
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('waktuTanggal').value = today;
+                document.getElementById('waktuJam').value = "10:30";
+            } catch (err) {
+                console.error("Error menyimpan laporan ke Cloud:", err);
+                showToast("Gagal menyimpan ke Cloud: " + err.message);
+            } finally {
+                btnSubmit.disabled = false;
+                btnText.textContent = 'Kirim Laporan "LAGI ASIK" ke Cloud';
+            }
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+
+        function closeSuccessModalAndGoDashboard() {
+            document.getElementById('successModal').classList.add('hidden');
+            switchTab('dashboard');
+            if (isOfficerLoggedIn && lastCreatedReport) {
+                showToast(`Laporan #${lastCreatedReport.id} tersinkronisasi di Cloud Dashboard Inteldakim.`);
+            } else {
+                showToast("Silakan otorisasi login petugas untuk melihat rincian laporan di Dashboard.");
+            }
+        }
+
+        // Fungsi Jembatan Operasional ke WhatsApp Resmi Tim Inteldakim
+        function buildWhatsAppUrl(report) {
+            const indikasiText = (report.indikasi || []).join(', ');
+            const message = `*LAPORAN MASYARAKAT - INOVASI "LAGI ASIK"*\n*Kantor Imigrasi Kelas II TPI Bintan*\n------------------------------------\n*No. Tiket:* #${report.id}\n*Kecamatan:* Kec. ${report.kecamatan}\n*Detail Lokasi:* ${report.lokasiDetail}\n*Koordinat GPS:* ${report.koordinat}\n*Waktu Kejadian:* ${report.tanggal} (${report.jam} WIB)\n\n*Jumlah & Negara WNA:* ${report.wnaJumlah} (${report.wnaNegara})\n*Indikasi:* ${indikasiText}\n*Kronologi:* ${report.kronologi}\n\n*Pelapor:* ${report.pelaporNama} (${report.pelaporKategori})\n*Kontak WA:* ${report.pelaporWa}\n*Status SOP:* ${report.status}`;
+            return `https://wa.me/?text=${encodeURIComponent(message)}`;
+        }
+
+        function simulateWhatsAppForward() {
+            if (!lastCreatedReport) return;
+            window.open(buildWhatsAppUrl(lastCreatedReport), '_blank');
+        }
+
+        function forwardDetailToWhatsApp() {
+            if (!activeDetailReportId) return;
+            const item = reportsData.find(r => r.id === activeDetailReportId);
+            if (!item) return;
+            window.open(buildWhatsAppUrl(item), '_blank');
+        }
+
+        // Render Tabel Dashboard Petugas
+        function renderReportTable() {
+            const tbody = document.getElementById('reportTableBody');
+            const searchVal = (document.getElementById('filterSearch')?.value || "").toLowerCase();
+            const kecVal = document.getElementById('filterKecamatan')?.value || "ALL";
+            const statusVal = document.getElementById('filterStatus')?.value || "ALL";
+
+            const filtered = reportsData.filter(item => {
+                const matchSearch = (item.id || "").toLowerCase().includes(searchVal) ||
+                                    (item.lokasiDetail || "").toLowerCase().includes(searchVal) ||
+                                    (item.wnaNegara || "").toLowerCase().includes(searchVal) ||
+                                    (item.pelaporNama || "").toLowerCase().includes(searchVal);
+                const matchKec = (kecVal === "ALL") || (item.kecamatan === kecVal);
+                const matchStatus = (statusVal === "ALL") || (item.status === statusVal);
+                return matchSearch && matchKec && matchStatus;
+            });
+
+            document.getElementById('showingCount').textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-10 text-center text-slate-400 text-sm">
+                            Tidak ada data laporan di Cloud yang sesuai dengan filter pencarian.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(item => {
+                const statusBadge = getStatusBadgeHTML(item.status);
+                const indikasiList = (item.indikasi || []).map(ind => 
+                    `<span class="inline-block bg-slate-100 text-slate-700 text-[11px] font-medium px-2 py-0.5 rounded-md mr-1 mb-1 border border-slate-200">${ind}</span>`
+                ).join('');
+
+                return `
+                    <tr class="hover:bg-slate-50/90 transition">
+                        <td class="py-3.5 px-4 align-top">
+                            <span class="font-mono font-bold text-xs text-imigrasi-navy bg-amber-100/80 border border-amber-300 px-2 py-0.5 rounded">#${item.id}</span>
+                            <div class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
+                                <i class="ph ph-calendar-blank"></i>
+                                <span>${item.tanggal} • ${item.jam} WIB</span>
+                            </div>
+                        </td>
+                        <td class="py-3.5 px-4 align-top max-w-xs">
+                            <span class="font-bold text-slate-800 block">Kec. ${item.kecamatan}</span>
+                            <span class="text-xs text-slate-600 line-clamp-2">${item.lokasiDetail}</span>
+                            <span class="text-[10px] text-emerald-700 font-medium flex items-center gap-1 mt-0.5">
+                                <i class="ph-fill ph-map-pin"></i> ${item.koordinat}
+                            </span>
+                        </td>
+                        <td class="py-3.5 px-4 align-top">
+                            <span class="font-semibold text-slate-800 block">${item.pelaporNama}</span>
+                            <span class="text-[11px] text-slate-500 block">${item.pelaporKategori}</span>
+                            <span class="text-[11px] text-emerald-600 font-medium">${item.pelaporWa}</span>
+                        </td>
+                        <td class="py-3.5 px-4 align-top max-w-xs">
+                            <div class="mb-1">
+                                <strong class="text-xs text-imigrasi-navy">${item.wnaJumlah}</strong>
+                                <span class="text-xs text-slate-500">(${item.wnaNegara})</span>
+                            </div>
+                            <div class="flex flex-wrap">${indikasiList}</div>
+                        </td>
+                        <td class="py-3.5 px-4 align-top">
+                            ${statusBadge}
+                        </td>
+                        <td class="py-3.5 px-4 align-top text-right no-print">
+                            <button onclick="openDetailModal('${item.id}')" class="bg-imigrasi-navy hover:bg-imigrasi-blue text-white text-xs font-semibold px-3 py-1.5 rounded-xl inline-flex items-center gap-1.5 shadow-sm transition">
+                                <i class="ph-bold ph-eye"></i>
+                                <span>Verifikasi & Disposisi</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function getStatusBadgeHTML(status) {
+            switch (status) {
+                case "Menunggu Verifikasi":
+                    return `<span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-800 border border-amber-300 text-xs font-bold px-2.5 py-1 rounded-full">
+                                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>Menunggu Verifikasi
+                            </span>`;
+                case "Verifikasi Analis":
+                    return `<span class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-800 border border-blue-200 text-xs font-bold px-2.5 py-1 rounded-full">
+                                <i class="ph-fill ph-magnifying-glass"></i>Verifikasi Analis
+                            </span>`;
+                case "Disposisi Kasi Inteldakim":
+                    return `<span class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-800 border border-purple-200 text-xs font-bold px-2.5 py-1 rounded-full">
+                                <i class="ph-fill ph-stamp"></i>Disposisi Kasi Inteldakim
+                            </span>`;
+                case "Penurunan Tim Lapangan":
+                    return `<span class="inline-flex items-center gap-1.5 bg-indigo-50 text-indigo-800 border border-indigo-200 text-xs font-bold px-2.5 py-1 rounded-full">
+                                <i class="ph-fill ph-users-three"></i>Tim Turun ke Lapangan
+                            </span>`;
+                case "Selesai":
+                    return `<span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold px-2.5 py-1 rounded-full">
+                                <i class="ph-fill ph-check-circle"></i>Selesai Ditindaklanjuti
+                            </span>`;
+                default:
+                    return `<span class="text-xs">${status}</span>`;
+            }
+        }
+
+        // Update Angka Kartu Statistik secara Real-Time
+        function updateDashboardStats() {
+            const total = reportsData.length;
+            const menunggu = reportsData.filter(r => r.status === "Menunggu Verifikasi").length;
+            const proses = reportsData.filter(r => ["Verifikasi Analis", "Disposisi Kasi Inteldakim", "Penurunan Tim Lapangan"].includes(r.status)).length;
+            const selesai = reportsData.filter(r => r.status === "Selesai").length;
+
+            const elTotal = document.getElementById('stat-total');
+            const elMenunggu = document.getElementById('stat-menunggu');
+            const elProses = document.getElementById('stat-proses');
+            const elSelesai = document.getElementById('stat-selesai');
+            const elBadgeNav = document.getElementById('badge-total-nav');
+
+            if (elTotal) elTotal.textContent = total;
+            if (elMenunggu) elMenunggu.textContent = menunggu;
+            if (elProses) elProses.textContent = proses;
+            if (elSelesai) elSelesai.textContent = selesai;
+            if (elBadgeNav) elBadgeNav.textContent = total;
+        }
+
+        // Buka Modal Detail Laporan & Disposisi
+        function openDetailModal(reportId) {
+            const item = reportsData.find(r => r.id === reportId);
+            if (!item) return;
+
+            activeDetailReportId = reportId;
+            document.getElementById('detailModalTicket').textContent = `#${item.id} • Kec. ${item.kecamatan}`;
+            document.getElementById('detailStatusSelect').value = item.status;
+
+            const indikasiBullets = (item.indikasi || []).map(i => `<li class="ml-4 list-disc">${i}</li>`).join('');
+            const imagePreviewHtml = item.buktiDataUrl
+                ? `<div class="mt-2"><img src="${item.buktiDataUrl}" alt="Foto Bukti Laporan" class="max-h-48 rounded-xl border border-slate-300 shadow-sm object-cover"></div>`
+                : '';
+
+            document.getElementById('detailModalContent').innerHTML = `
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <div>
+                        <p class="text-[11px] font-bold uppercase text-slate-400">Informasi Pelapor</p>
+                        <p class="font-bold text-slate-800 mt-0.5">${item.pelaporNama}</p>
+                        <p class="text-xs text-slate-600">${item.pelaporKategori}</p>
+                        <p class="text-xs text-emerald-700 font-semibold mt-1 flex items-center gap-1">
+                            <i class="ph-fill ph-whatsapp-logo"></i> ${item.pelaporWa}
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-bold uppercase text-slate-400">Waktu & Lokasi Kejadian</p>
+                        <p class="font-bold text-slate-800 mt-0.5">Kecamatan ${item.kecamatan}</p>
+                        <p class="text-xs text-slate-600">${item.lokasiDetail}</p>
+                        <p class="text-[11px] text-slate-500 mt-1">${item.tanggal} pukul ${item.jam} WIB • GPS: ${item.koordinat}</p>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <p class="text-xs font-bold uppercase text-imigrasi-navy">Rincian Dugaan Kegiatan Orang Asing</p>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-2">
+                        <div class="flex flex-wrap gap-4 text-xs">
+                            <span><strong>Jumlah WNA:</strong> ${item.wnaJumlah}</span>
+                            <span><strong>Dugaan Negara:</strong> ${item.wnaNegara}</span>
+                        </div>
+                        <div class="text-xs text-slate-700">
+                            <strong>Kategori Indikasi:</strong>
+                            <ul class="mt-1 space-y-0.5 text-slate-600">${indikasiBullets}</ul>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 text-xs">
+                            <strong class="block text-slate-800 mb-1">Kronologi Laporan Masyarakat:</strong>
+                            <p class="text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-200">${item.kronologi}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50/70 border border-blue-200 rounded-2xl p-3.5 text-xs">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <i class="ph-fill ph-paperclip text-blue-600 text-lg"></i>
+                            <div>
+                                <span class="font-bold text-slate-800 block">Lampiran Bukti Pendukung:</span>
+                                <span class="text-blue-700 font-medium">${item.buktiFile}</span>
+                            </div>
+                        </div>
+                        <span class="bg-white text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1">
+                            <i class="ph-fill ph-cloud-check"></i> Tersimpan di Cloud
+                        </span>
+                    </div>
+                    ${imagePreviewHtml}
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Disposisi Kasi Inteldakim / Tindak Lanjut Petugas:</label>
+                    <textarea id="detailCatatanInput" rows="2" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-imigrasi-navy outline-none">${item.catatanPetugas || ''}</textarea>
+                </div>
+            `;
+
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+            activeDetailReportId = null;
+        }
+
+        // Simpan Perubahan Status & Disposisi ke Cloud Firestore
+        async function saveStatusUpdate() {
+            if (!activeDetailReportId) return;
+            const newStatus = document.getElementById('detailStatusSelect').value;
+            const newCatatan = document.getElementById('detailCatatanInput').value;
+
+            try {
+                if (currentUser && db) {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'lagiasik_reports', activeDetailReportId);
+                    await updateDoc(docRef, {
+                        status: newStatus,
+                        catatanPetugas: newCatatan
+                    });
+                } else {
+                    const item = reportsData.find(r => r.id === activeDetailReportId);
+                    if (item) {
+                        item.status = newStatus;
+                        item.catatanPetugas = newCatatan;
+                        renderReportTable();
+                        updateDashboardStats();
+                    }
+                }
+                const updatedId = activeDetailReportId;
+                closeDetailModal();
+                showToast(`Disposisi tiket #${updatedId} berhasil diperbarui di Cloud: ${newStatus}`);
+            } catch (err) {
+                console.error("Gagal update status di Cloud:", err);
+                showToast("Gagal memperbarui dokumen Cloud: " + err.message);
+            }
+        }
+
+        // Hapus Laporan Uji Coba dari Cloud Firestore
+        async function deleteReportFromCloud() {
+            if (!activeDetailReportId) return;
+            const targetId = activeDetailReportId;
+            try {
+                if (currentUser && db) {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'lagiasik_reports', targetId);
+                    await deleteDoc(docRef);
+                } else {
+                    reportsData = reportsData.filter(r => r.id !== targetId);
+                    renderReportTable();
+                    updateDashboardStats();
+                }
+                closeDetailModal();
+                showToast(`Laporan #${targetId} telah dihapus dari Cloud Database.`);
+            } catch (err) {
+                console.error("Gagal menghapus laporan:", err);
+                showToast("Gagal menghapus dari Cloud: " + err.message);
+            }
+        }
+
+        // Fungsi Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toastBox');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3800);
+        }
+
+        // =================================================================
+        // FITUR TAMBAHAN PRODUCTION: MODE PUBLIK, LACAK TIKET, QR & CSV
+        // =================================================================
+        function togglePublicPreviewMode() {
+            isPublicOnlyMode = !isPublicOnlyMode;
+            applyPublicModeUI();
+            if (isPublicOnlyMode) {
+                switchTab('form');
+                showToast("Mode Tampilan Publik Aktif (Tampilan warga saat scan QR).");
+            } else {
+                showToast("Menu Navigasi Admin ditampilkan kembali.");
+            }
+        }
+
+        function applyPublicModeUI() {
+            const adminTabs = document.getElementById('adminNavTabs');
+            const publicBanner = document.getElementById('publicModeBanner');
+            const btnToggle = document.getElementById('btnTogglePublicMode');
+
+            if (isPublicOnlyMode) {
+                if (adminTabs) adminTabs.classList.add('hidden');
+                if (publicBanner) publicBanner.classList.remove('hidden');
+                if (btnToggle) btnToggle.classList.add('hidden');
+            } else {
+                if (adminTabs) adminTabs.classList.remove('hidden');
+                if (publicBanner) publicBanner.classList.add('hidden');
+                if (btnToggle) btnToggle.classList.remove('hidden');
+            }
+        }
+
+        function openTrackTicketModal() {
+            document.getElementById('trackTicketModal').classList.remove('hidden');
+            if (lastCreatedReport) {
+                document.getElementById('trackTicketInput').value = lastCreatedReport.id;
+            }
+        }
+
+        function closeTrackTicketModal() {
+            document.getElementById('trackTicketModal').classList.add('hidden');
+        }
+
+        function handleTrackTicketSearch(event) {
+            event.preventDefault();
+            const rawQuery = document.getElementById('trackTicketInput').value.trim().replace(/^#/, '').toUpperCase();
+            const resultBox = document.getElementById('trackTicketResult');
+            const found = reportsData.find(r => (r.id || '').toUpperCase() === rawQuery);
+
+            resultBox.classList.remove('hidden');
+            if (!found) {
+                resultBox.innerHTML = `
+                    <div class="bg-red-50 border border-red-200 rounded-2xl p-4 text-xs text-red-800">
+                        <strong class="block font-bold">Tiket Tidak Ditemukan</strong>
+                        Nomor tiket <span class="font-mono font-bold">${rawQuery}</span> belum terdaftar. Pastikan penulisan sesuai dengan bukti tiket Anda.
+                    </div>
+                `;
+                return;
+            }
+
+            resultBox.innerHTML = `
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2.5 text-xs">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <span class="font-mono font-extrabold text-imigrasi-navy">#${found.id}</span>
+                        ${getStatusBadgeHTML(found.status)}
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Lokasi Kecamatan:</span>
+                        <strong class="text-slate-800">Kec. ${found.kecamatan}</strong>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-500">Waktu Laporan:</span>
+                        <span class="text-slate-700">${found.tanggal} (${found.jam} WIB)</span>
+                    </div>
+                    <div class="pt-2 border-t border-slate-200">
+                        <span class="text-slate-500 block mb-1">Keterangan Tindak Lanjut Petugas:</span>
+                        <p class="bg-white p-2.5 rounded-xl border border-slate-200 text-slate-700 font-medium">${found.catatanPetugas || 'Sedang dalam proses verifikasi petugas Inteldakim.'}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateDynamicQrCode() {
+            const inputVal = (document.getElementById('customQrUrlInput')?.value || 'https://s.id/LagiAsikBintan').trim();
+            const qrImg = document.getElementById('dynamicQrImage');
+            const shortlinkText = document.getElementById('posterShortlinkText');
+
+            if (qrImg && inputVal) {
+                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=6&color=0B1F3A&data=${encodeURIComponent(inputVal)}`;
+            }
+            if (shortlinkText) {
+                shortlinkText.textContent = inputVal.replace(/^https?:\/\//, '');
+            }
+        }
+
+        function useCurrentBrowserUrl() {
+            const cleanUrl = window.location.href.split('?')[0] + '?mode=publik';
+            document.getElementById('customQrUrlInput').value = cleanUrl;
+            updateDynamicQrCode();
+            showToast("QR Code diperbarui ke alamat URL website aktif.");
+        }
+
+        function copyQrLink() {
+            const inputEl = document.getElementById('customQrUrlInput');
+            if (!inputEl) return;
+            inputEl.select();
+            document.execCommand('copy');
+            showToast("Tautan tujuan QR Code berhasil disalin!");
+        }
+
+        function exportReportsToCSV() {
+            if (!reportsData || reportsData.length === 0) {
+                showToast("Belum ada data laporan untuk diekspor.");
+                return;
+            }
+            const headers = ["No Tiket", "Tanggal", "Jam", "Kecamatan", "Detail Lokasi", "Koordinat GPS", "Pelapor", "Kategori Pelapor", "No WA", "Jumlah WNA", "Negara WNA", "Indikasi", "Kronologi", "Status SOP", "Catatan Disposisi"];
+            const rows = reportsData.map(r => [
+                r.id, r.tanggal, r.jam, r.kecamatan, r.lokasiDetail, r.koordinat,
+                r.pelaporNama, r.pelaporKategori, r.pelaporWa, r.wnaJumlah, r.wnaNegara,
+                (r.indikasi || []).join('; '), r.kronologi, r.status, r.catatanPetugas
+            ].map(val => `"${String(val || '').replace(/"/g, '""')}"`).join(','));
+
+            const csvContent = "\uFEFF" + [headers.join(','), ...rows].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `Rekap_Laporan_LAGI_ASIK_Imigrasi_Bintan_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("File Excel/CSV berhasil diunduh untuk Bukti Dukung Aksi Perubahan.");
+        }
+
+        // Ekspos fungsi ke global window agar dapat dipanggil oleh atribut onclick di HTML
+        window.switchTab = switchTab;
+        window.syncRolePlaceholder = syncRolePlaceholder;
+        window.togglePasswordVisibility = togglePasswordVisibility;
+        window.handleOfficerLogin = handleOfficerLogin;
+        window.quickDemoLogin = quickDemoLogin;
+        window.handleOfficerLogout = handleOfficerLogout;
+        window.toggleAnonymous = toggleAnonymous;
+        window.updateDefaultCoords = updateDefaultCoords;
+        window.simulateGPS = simulateGPS;
+        window.handleFileSelect = handleFileSelect;
+        window.clearFile = clearFile;
+        window.fillDemoForm = fillDemoForm;
+        window.handleFormSubmit = handleFormSubmit;
+        window.closeSuccessModal = closeSuccessModal;
+        window.closeSuccessModalAndGoDashboard = closeSuccessModalAndGoDashboard;
+        window.simulateWhatsAppForward = simulateWhatsAppForward;
+        window.forwardDetailToWhatsApp = forwardDetailToWhatsApp;
+        window.renderReportTable = renderReportTable;
+        window.openDetailModal = openDetailModal;
+        window.closeDetailModal = closeDetailModal;
+        window.saveStatusUpdate = saveStatusUpdate;
+        window.deleteReportFromCloud = deleteReportFromCloud;
+        window.seedSampleReportsToCloud = seedSampleReportsToCloud;
+        window.togglePublicPreviewMode = togglePublicPreviewMode;
+        window.openTrackTicketModal = openTrackTicketModal;
+        window.closeTrackTicketModal = closeTrackTicketModal;
+        window.handleTrackTicketSearch = handleTrackTicketSearch;
+        window.updateDynamicQrCode = updateDynamicQrCode;
+        window.useCurrentBrowserUrl = useCurrentBrowserUrl;
+        window.copyQrLink = copyQrLink;
+        window.exportReportsToCSV = exportReportsToCSV;
+
+        // Jalankan inisialisasi saat halaman siap
+        initLagiAsikApp();
+    </script>
+</body>
+</html>
